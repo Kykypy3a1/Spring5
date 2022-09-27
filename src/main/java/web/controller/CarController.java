@@ -2,11 +2,17 @@ package web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import web.model.Car;
 import web.service.CarServiceImpl;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 @Controller
@@ -17,14 +23,16 @@ public class CarController {
     private CarServiceImpl carService;
 
     @GetMapping()
-    public String getCars(ModelMap model) {
-        model.addAttribute("cars", carService.getCars());
-        return "cars/getCars";
+    public String getCars(@RequestParam(value = "count", required = false) Integer count,ModelMap model) {
+        if (count == null) {
+            model.addAttribute("cars", carService.getCars());
+            return "cars";
+        } else {
+            model.addAttribute("cars", carService.getSomeCars(count));
+            return "cars";
+        }
+
+
     }
 
-    @GetMapping("?count={number}")
-    public String getSomeCars (@PathVariable("number") int number, ModelMap model) {
-        model.addAttribute("cars", carService.getSomeCars(number));
-        return  "cars/getSomeCars";
-    }
 }

@@ -25,6 +25,6 @@ public class CarServiceImpl {
     }
 
     public List<Car> getSomeCars(int number) {
-        return cars.subList(0, number - 1);
+        return cars.subList(0, number);
     }
 }
